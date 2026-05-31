@@ -1,0 +1,580 @@
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ancestry Tree | Sebenzile &amp; Olga Legacy</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Work+Sans:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#99907c",
+                      "inverse-primary": "#735c00",
+                      "on-tertiary-container": "#2b4d1c",
+                      "on-secondary": "#532200",
+                      "surface-variant": "#40322c",
+                      "surface-container-highest": "#40322c",
+                      "surface-bright": "#453630",
+                      "on-tertiary-fixed-variant": "#2d4f1e",
+                      "surface-container-high": "#342721",
+                      "primary-fixed-dim": "#e9c349",
+                      "on-tertiary-fixed": "#062100",
+                      "on-surface": "#f5ded5",
+                      "on-error": "#690005",
+                      "on-secondary-container": "#fb9f66",
+                      "tertiary-fixed": "#c5efad",
+                      "outline-variant": "#4d4635",
+                      "on-primary-container": "#554300",
+                      "secondary-fixed": "#ffdbc9",
+                      "error": "#ffb4ab",
+                      "tertiary": "#b1da9a",
+                      "on-primary-fixed-variant": "#574500",
+                      "on-primary": "#3c2f00",
+                      "surface-container": "#291d17",
+                      "on-primary-fixed": "#241a00",
+                      "surface": "#1c110c",
+                      "background": "#1c110c",
+                      "on-tertiary": "#173809",
+                      "surface-container-lowest": "#160c07",
+                      "secondary": "#ffb68c",
+                      "inverse-surface": "#f5ded5",
+                      "surface-tint": "#e9c349",
+                      "on-secondary-fixed": "#321200",
+                      "on-secondary-fixed-variant": "#753401",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#251913",
+                      "secondary-fixed-dim": "#ffb68c",
+                      "primary-fixed": "#ffe088",
+                      "on-surface-variant": "#d0c5af",
+                      "tertiary-fixed-dim": "#a9d293",
+                      "surface-dim": "#1c110c",
+                      "secondary-container": "#753401",
+                      "inverse-on-surface": "#3b2d27",
+                      "tertiary-container": "#96be81",
+                      "error-container": "#93000a",
+                      "primary": "#f2ca50",
+                      "on-background": "#f5ded5",
+                      "primary-container": "#d4af37"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "1.5rem",
+                      "container-padding": "2rem",
+                      "tree-node-gap": "4rem",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": ["Cinzel"],
+                      "headline-md": ["Cinzel"],
+                      "body-md": ["Cormorant Garamond"],
+                      "label-sm": ["Work Sans"],
+                      "display-lg": ["Cinzel"],
+                      "body-lg": ["Cormorant Garamond"]
+              },
+              "fontSize": {
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "body-md": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #1c110c;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(242, 202, 80, 0.05) 0%, transparent 70%),
+                url("https://www.transparenttextures.com/patterns/black-paper.png");
+            overflow-x: hidden;
+        }
+
+        .glass-node {
+            background: rgba(41, 29, 23, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(242, 202, 80, 0.2);
+            transition: all 0.5s ease-out;
+            cursor: pointer;
+        }
+
+        .glass-node:hover {
+            border-color: rgba(242, 202, 80, 0.8);
+            box-shadow: 0 0 30px rgba(242, 202, 80, 0.15);
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .node-portrait {
+            filter: grayscale(100%);
+            transition: filter 0.6s ease;
+        }
+
+        .glass-node:hover .node-portrait {
+            filter: grayscale(0%);
+        }
+
+        .particle {
+            position: fixed;
+            background: #f2ca50;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 0;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.4; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .scroll-container::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 10px;
+        }
+        .scroll-container::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* Modal Animations */
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes modalScaleUp {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-overlay {
+            animation: modalFadeIn 0.3s ease-out forwards;
+        }
+        .modal-card {
+            animation: modalScaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary/30">
+<div id="particles"></div>
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-md border-b border-primary/20 shadow-[0_0_20px_rgba(212,175,55,0.15)] flex justify-between items-center px-gutter py-4 transition-all duration-500 ease-out">
+<div class="font-display-lg text-headline-md tracking-widest text-primary uppercase">SEBENZILE &amp; OLGA</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-sm text-label-sm" href="#">Heritage</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-label-sm text-label-sm" href="#">Ancestry</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-sm text-label-sm" href="#">Gallery</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-sm text-label-sm" href="#">Timeline</a>
+</nav>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform">account_circle</span>
+</div>
+</header>
+<aside class="h-full w-64 fixed left-0 top-0 hidden lg:flex flex-col bg-surface-container/80 backdrop-blur-lg border-r border-primary/10 shadow-2xl z-40 p-6 pt-24 gap-base">
+<div class="mb-8 px-2">
+<div class="w-16 h-16 rounded-full border-2 border-primary overflow-hidden mb-4 shadow-[0_0_15px_rgba(212,175,55,0.3)]">
+<img alt="Family Crest" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwvNuIeniivM4tbrn6cXJhjsMiRqTEqjt_rVh1UQaKfx5RhH_FpwARllbw8CqAtWSNxdi9p1OzD6QbDY15CVdzrKDRiCBeb0L5DOGBUlzdJ7nIpYnk7TFw3Y-9gI3psycrbHoeSe6MTUvz7CqX11Ttfb9SPA2tBLm0f9BwTtKEJ4iWpQrBssnRQmhkKYax_ayqSgh_N3juTHZkuJab3nwW7b2o6FZGAEDnhsLpoKC7H-9itLQueqfUhLh95AsTK_iXL6Z_-g59S7Y"/>
+</div>
+<h2 class="font-display-lg text-primary text-lg">Sebenzile &amp; Olga</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant opacity-70">Est. 1954</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 p-3 text-primary bg-primary-container/20 rounded-lg scale-105 active:scale-95 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-sm text-label-sm">Tree</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-4 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span class="font-label-sm text-label-sm">Archives</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-4 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-label-sm text-label-sm">Chronicles</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-4 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+</nav>
+</aside>
+<main class="lg:ml-64 pt-24 min-h-screen relative overflow-hidden flex flex-col">
+<section class="px-gutter mb-12 text-center max-w-4xl mx-auto">
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-4">The Living Tree</h1>
+<p class="text-body-lg text-on-surface-variant italic">"A people without the knowledge of their past history, origin and culture is like a tree without roots."</p>
+</section>
+<div class="flex-grow scroll-container overflow-auto cursor-grab active:cursor-grabbing p-12 select-none">
+<div class="inline-flex flex-col items-center gap-32 min-w-max mx-auto">
+<!-- 1. Generation I: The Founders -->
+<div class="flex flex-col items-center gap-12">
+<span class="font-label-sm text-label-sm text-primary mb-2 tracking-[0.3em] uppercase">Generation I: The Founders</span>
+<div class="flex gap-16">
+<div class="flex flex-col items-center gap-4 family-member" data-dates="1890 - 1965" data-name="Prince Marhingqi">
+<div class="glass-node w-32 h-32 rounded-full p-1 border-2 border-primary/50 overflow-hidden shadow-lg">
+<img alt="Prince Marhingqi" class="node-portrait w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVpNYYTrMMtJdqcaDGcz3f-Bej4N6D2Wxe8qvjvknaVxbINzZUA48iiLYF05Som6u40fgCdDReDRr7rtX1ZBKIqv13GWnwfTdVU1hIKc9WQwbmeXRAyj6CPH4tvbCFf-NoSnCCmks1THeElw-2i1j9diVqwmSMgTJRlo_JKQPvfyQ4Y9cWGX0KsrbKSstYJ9WTaSvHE0RmbVr43NKuC29Vb3PEsnPA1E0X8cgW8-8WX2dcTeHb0iL9DA8zRTMTgUAVONXhsVmOK8M"/>
+</div>
+<span class="font-display-lg text-sm text-on-surface text-center cursor-pointer hover:text-primary transition-colors">Prince Marhingqi<br/><span class="text-[10px] opacity-60">1890 - 1965</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 family-member" data-dates="1895 - 1970" data-name="Princess Manyawuza">
+<div class="glass-node w-32 h-32 rounded-full p-1 border-2 border-primary/50 overflow-hidden shadow-lg">
+<img alt="Princess Manyawuza" class="node-portrait w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUSuyhvFlCEJPznyIbMeZZpUkaKyeDTYKXDUnlkXDyJLfn1gT0LrBsA-AFClPuw4jJjU2t9e-K2JkTL1iRfttEdJIsrYzavf40zeXFGcsoZRG-QOA8gNGfo8AQXPMNo9nsvSxNu90TURQrPeKGu2v9TSyQlP2Hp-thZ_v_vOgl8cbs5faNodnwaVGVfH4nyequpibzwtEfC05lHYGuq4QvYA8HL8oMfCDu2CKx415m9DBMXz5Ks-pJNnnTffBkuoiUl3qr33uWiuU"/>
+</div>
+<span class="font-display-lg text-sm text-on-surface text-center cursor-pointer hover:text-primary transition-colors">Princess Manyawuza<br/><span class="text-[10px] opacity-60">1895 - 1970</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 family-member" data-dates="1900 - 1975" data-name="Prince Thungilala">
+<div class="glass-node w-32 h-32 rounded-full p-1 border-2 border-primary/50 overflow-hidden shadow-lg">
+<img alt="Prince Thungilala" class="node-portrait w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_S5XqSiqKXAP2nfeVT9LgU4yU8pEV02gxeJLsyFj3qtEL4Ykt178bUr4EnEz3TG0LY_-pe-q4rPIoTdaZbeedQbG_QD13fkAPQH0WHwNtzouzhFS_m1rW-5bER33P_Loa4mEHczG2UejG45aX_znnPCSKmWVwuQajPswR7whLck39SxC8UMCHsrTDRt1VUKaB0A61DOoRk8sZtFmlK-06Qqi6brXRxb06wQDqthcP2eOb1R-d743rdukZhGtWkNs75BCdGnvNd_4"/>
+</div>
+<span class="font-display-lg text-sm text-on-surface text-center cursor-pointer hover:text-primary transition-colors">Prince Thungilala<br/><span class="text-[10px] opacity-60">1900 - 1975</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 family-member" data-dates="1924 - 2005" data-name="Princess Alice">
+<div class="glass-node w-32 h-32 rounded-full p-1 border-2 border-primary/50 overflow-hidden shadow-lg">
+<img alt="Princess Alice" class="node-portrait w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcNsEbx4oI0CjO_3_1yVxgIq4b25SZrWaYQR57Ttec89J9bkfe8BYaS6zvr5QjL30EObXmMzUhSBsQsNeiDQjYtqu0cYNePyYSxnRKGA2aWOAlFnS5Q5hcquHZy3DpkIm00dG1agKRo12ThdsZD0dSyXfeZlP3_rh-l38x10sVP8vTqoSEmq10wEH3aApzenVZX-LkRQjtW-Lkdv0jLVk7OisFUYL5yHKT3zrzxTEV4tj7k4a7Z0ngZPoiIq9TXBd2yYTknc3dEdg"/>
+</div>
+<span class="font-display-lg text-sm text-on-surface text-center cursor-pointer hover:text-primary transition-colors">Princess Alice<br/><span class="text-[10px] opacity-60">1924 - 2005</span></span>
+</div>
+</div>
+</div>
+<!-- 2. Sebenzile's Siblings -->
+<div class="flex flex-col items-center gap-8">
+<span class="font-label-sm text-label-sm text-primary/60 tracking-[0.2em] uppercase">SEBENZILE'S SIBLINGS</span>
+<div class="flex gap-12">
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1938 - Present" data-name="Phumelele">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/30 group">
+<img alt="Phumelele" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLOrgFcczgBrxZrDYfXvjREm8tNwH2sFd1I1msHkMjUqUYRfvKln00H84c6ogaOTPoghYnstI7I-s0KbvO2UzjmsBFx6zMGuMULtl30O5RQMmrgo1ALvRCj6P7js3jG043aON8iHP3JLRmULNopESzTLk_Yn-eDnMiV4oYgpMul-aIDRRerv-rg1Mg_GxZAZeBWu3K_Mcg2eXtxNhE3DUHLt2cq25EUxEYpZBWkNB_SeZwGCKE-VSCP_NRUYL7xWcvIKsSZG7R28c"/>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant cursor-pointer hover:text-primary">Phumelele</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1940 - 2012" data-name="Tsokolwane">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/30 group">
+<img alt="Tsokolwane" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiKDupA-D47BbKFMCsGtTBKlLrfP1q4_Ub9hsmzzYwo5dGeRFEQr95-lahKThpqelg67nsKz44QGBVvWapN4mgsTyNbAWVRhJWDluSsO9mKRpHc3kriy7Y-GYtutvQZdpJrQcb1imI8EKuzFm0tb7ygOPV5NC-FlLv50s0YWlVmndCn7RzcrDp91mw8qPOP0CaFusvATYV8UqpcSXfF2jbxnOinT9ZBqI13bDmivVDSFTEcqGNpZY0DLMzwPHHpNQkcNNxDVHT-o8"/>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant cursor-pointer hover:text-primary">Tsokolwane</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1943 - Present" data-name="Joel">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/30 group">
+<img alt="Joel" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgdF-gzflSksfpMS6YwuGk2T5YfkuD8RAf-bZ8BTZf_PPYKHCv4y2emVVzgYNu-mGHOq6LrvgQtlXeJ3cmyF0wTQ6CdXGegZG3UZCWYSclE9I6xFia57FbiWb6nn_G7Z5hqTVqZIVjKKhGY_g7ZnKnW0MDJwT2QbI8JgswqKMGSPtFskreTMqkvH-IgOIWRZ9zpXmXB9wcMQamvYvd-v71XyZMDwgluhVEXKwWqI_0oiHNYYYhBs-JpKyNt7Klcp1vqYZH0-S1sqs"/>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant cursor-pointer hover:text-primary">Joel</span>
+</div>
+</div>
+</div>
+<!-- 3. Nothozamile's Siblings -->
+<div class="flex flex-col items-center gap-8">
+<span class="font-label-sm text-label-sm text-primary/60 tracking-[0.2em] uppercase">NOTHOZAMILE'S SIBLINGS</span>
+<div class="flex flex-wrap justify-center gap-8 items-end">
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1942 - Present" data-name="Nozinesi">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20 group">
+<img alt="Nozinesi" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ugIKIBW325eZPg6QTnII1GyGorhcxkdXe8H9YxBIUuMnkd20Pk_Co2vzuAsqzxC74YXP7ndiGlqZI0OFjJ3tAjV0fKO6dslzXcAuVfqSvAN8V1ioAocPuiLOtynbcjxXpcobdoBVKUBrCgWJyYvXopqjzoEAQBM7TkZSXBBsRIcnEvKvfWxuBtuSPyVfkZbF5SBxNLLIMqZyv497kRbjGqYlLuBvSmfwDOpei1sN54Ddc0iaibO6dqI_6Y"/>
+</div>
+<span class="font-display-lg text-xs hover:text-primary transition-colors cursor-pointer">Nozinesi</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1944 - Present" data-name="Thelisa">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20 group">
+<img alt="Thelisa" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ugbnhPSl_qZllrFJjmRBMQh3VAm4I4QSFJUU_ntjUOH6mrx4pq2Q_cTswHsHG1D5sZgfsEtRZRIRRgKO8Yp7-olSwbytus38WZy8tYLo0j36y1CoGaQhDH6nSGldW5bu5eFpKens1d9OU4xKS5MV0gt2TEOSDEajtgTFNktd8Kaq_lJKBTDU_EJDWLrFu_xHycPf6bsS2pThVQn0IhJ_W-qjkLUi0et4_Hcpiab_E-VekLVWJegq3fRGJQ"/>
+</div>
+<span class="font-display-lg text-xs hover:text-primary transition-colors cursor-pointer">Thelisa</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1946 - Present" data-name="Sgxakamela">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20 group">
+<img alt="Sgxakamela" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ugomjrQpEluunT7BHy5AWNvRPk4298HGr6RHanFtTvwOZYfLbV6DyUlvWlT0MAVL8IhuZDltPuqSNX_gcbNYLLivDJaqwa-K3qBPZVeFfTOSc9Tb6tyY4vRHLWD5bFncDH2SD0zf6MpZHnEeSJnJDZTlY_sZwX9CHesF99Yw15jWJVnblQYlgLR5jLa98y9-mr7lNkgl3fmBSQAWrWK_iqHkf7KWLLj6-Z9LGCPY08Oz31nwkQZ1Mmd3RI"/>
+</div>
+<span class="font-display-lg text-xs hover:text-primary transition-colors cursor-pointer">Sgxakamela</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1948 - Present" data-name="Nontlupheko">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20 group">
+<img alt="Nontlupheko" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujlPyBJHV1FHYxoip6NXp__cfQV987wvqmDux7Wn0m3ZAWE6tbfIIPDasgYJQqfUuZMJkAs2jQA26iwi1axAJJ-ahnotnD5b8CdM6p-ncoPN-F7TVFFIERoaFEOroLQRbYjqKHjJEJkKYSCBjWItGc_lYOKbQWb71D3sTc5dM6iYYCrqkmhFNPMAov88ejESpa318feHSvv6DRpFoEqgyJa7tsSbODMWEY3UmiEpvc_JZ2mYpn5lSJfEvk"/>
+</div>
+<span class="font-display-lg text-xs hover:text-primary transition-colors cursor-pointer">Nontlupheko</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1950 - Present" data-name="Nomadreamer">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20 group">
+<img alt="Nomadreamer" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ugOdeITW1BmSeNnThRgL9OgDcB07g3cvuqx3HjaZxyjwceBj6_6hFc6xvaVBXDpQcqYCdgvnXhs9KAuFn-bkulSg3hBzZYrh9D6Alk-xcazMqsZSYHofny0UvBAnzUg7FBmw6HdYWnZ2a7qsGWS8q5fkubs4gopFx1Ocnc58ZG0Yr2DUtR4ts68o2xvVYLSXCg10OcjxmcV8H06Oku_kIoTispSsSZPbEA2-p8XAgqjmtYbxR-dznk0kQ"/>
+</div>
+<span class="font-display-lg text-xs hover:text-primary transition-colors cursor-pointer">Nomadreamer</span>
+</div>
+<div class="flex flex-col items-center gap-3 family-member" data-dates="1952 - Present" data-name="Nizisulu">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20 group">
+<img alt="Nizisulu" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uhnyb3EwHMfP_TNEBa5Ks6JCylZXlTgbdYC6u7XvEy7Rak70Z7HceugwtfF1kH7MblLi_9gLNXNiez3h3ioZNkqbsp_DHAURkIm6yNR5ssMI5i7BEjlbg667AgxYxxav5v_Xku_mNam41Rpko6KHoAVUbfWEvRUUkDSqEIpoLFXD9rtnbkfILkhWCtN2Owv1b3rwmTwbAW-q-MlliSKJPOfVb_LGnIVQzMUE99qHmsTvnEUU43XVDaXfl0"/>
+</div>
+<span class="font-display-lg text-xs hover:text-primary transition-colors cursor-pointer">Nizisulu</span>
+</div>
+</div>
+</div>
+<!-- 4. The Union: Prince Sebenzile and Princess Nothozamile -->
+<div class="flex flex-col items-center gap-12">
+<span class="font-label-sm text-label-sm text-primary tracking-[0.3em] uppercase">The Union</span>
+<div class="flex gap-16 items-center px-16 border-x border-primary/10">
+<div class="flex flex-col items-center gap-4 family-member" data-dates="1941 - 1991" data-name="PRINCE SEBENZILE">
+<div class="glass-node w-40 h-40 rounded-full p-2 border-4 border-primary ring-8 ring-primary/10 overflow-hidden shadow-2xl">
+<img alt="Sebenzile" class="node-portrait w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsI-Rsm9FdTMiIzUPZqFIEn3WLN7fPKzavHeSYbUhBM-nlITVaedJLYpY_Xi3VN_rzy7hMls0DOkH5iWdyraL9zVMQyls17b37NbwqsOp1aNc69ahdPWScQDcB0Xv1Vuu44tWs522Pq1S62hGvmK_66rtekZj0SHpQmBUoDvQJ5Hh9zZOJ76XyGcgBCdanrhLOQbdkwD5ddcDnZU-QCM_EGkOa3p5_TaI5Pv3GYWvG3Ff2omfQuLTEhT6Zu0paHn9pUOESf3nZX8Q"/>
+</div>
+<span class="font-display-lg text-lg text-primary text-center cursor-pointer hover:scale-105 transition-transform">PRINCE SEBENZILE<br/><span class="text-xs font-label-sm opacity-70 uppercase tracking-widest">1941 - 1991</span></span>
+</div>
+<div class="flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-primary text-5xl animate-pulse" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div class="flex flex-col items-center gap-4 family-member" data-dates="1945 - Present" data-name="PRINCESS NOTHOZAMILE">
+<div class="glass-node w-40 h-40 rounded-full p-2 border-4 border-primary ring-8 ring-primary/10 overflow-hidden shadow-2xl">
+<img alt="Nothozamile" class="node-portrait w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCmFFj4g2KpEQskBQUATyMUaxfpS0xjWFYr2ou0w6WsjHBlgY8dDBt_x-UFIuvz54VmlyHRODNfzgJdP8bMjoMeSP54t9o1wLSF1t-qd58VWRBuX6pfPnYEWm6thMPNo4-A3YHGrzNDhr8Cj2-i-d9tEkxn7JDk-xaFAtDauZGShcw-Cp93u3ihJf_UJKbNhX4TNCZRzrA9677fXQvJrbyRr6zOjoaL7f-3pwFgp6nJV-evxTJWYnJOYxcDTk75TiZO6bxS6MB4fww"/>
+</div>
+<span class="font-display-lg text-lg text-primary text-center cursor-pointer hover:scale-105 transition-transform">PRINCESS NOTHOZAMILE<br/><span class="text-xs font-label-sm opacity-70 uppercase tracking-widest">1945 - Present</span></span>
+</div>
+</div>
+</div>
+<!-- 5. Generation III: The Pillars (Children) -->
+<div class="flex flex-col items-center gap-12">
+<span class="font-label-sm text-label-sm text-primary tracking-[0.3em] uppercase">Generation III: The Pillars</span>
+<div class="flex flex-col gap-12 items-center">
+<!-- Row 1 (Top Row) -->
+<div class="grid grid-cols-5 gap-12">
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1971 - Present" data-name="Vuyisani">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Vuyisani<br/><span class="text-[10px] opacity-60">1971 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1973 - Present" data-name="Zuko">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Zuko<br/><span class="text-[10px] opacity-60">1973 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1975 - Present" data-name="Ntombikayise">
+<div class="glass-node w-24 h-24 rounded-full border-2 border-primary overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(242,202,80,0.3)]">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<span class="font-display-lg text-xs text-primary text-center font-bold cursor-pointer">Ntombikayise<br/><span class="text-[10px]">1975 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1977 - Present" data-name="Mlungiseleli">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Mlungiseleli<br/><span class="text-[10px] opacity-60">1977 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1979 - Present" data-name="Bathandwa">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Bathandwa<br/><span class="text-[10px] opacity-60">1979 - Present</span></span>
+</div>
+</div>
+<!-- Row 2 (Bottom Row) -->
+<div class="grid grid-cols-5 gap-12">
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1981 - 1983" data-name="Lwazi">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20">
+<img alt="Lwazi" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uhB-JNT1qKe0YAOVaoUY2KbQ7UWanWsm4mfzfWnr6hNAzb8PJunJ9Wfe6-NijiJY6REE3PSsYmdZts_gii_HlzadmsJnzOFkiKrhTVv8GJ0ssM14jvcI2JXluJtcwEs5KbqC-egIIF1EgA0KVd-4q8TaKq4Zp5zSgPwYJll2ieJyTifmky91ppnt69IQbkzoyxdszo38FQytq3FrnNqJI83whmgsz9kGoTwAI-Q4kZYnj4yOLzhWO8uXUU"/>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Lwazi<br/><span class="text-[10px] opacity-60">1981 - 1983</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1982 - Present" data-name="Luyanda">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Luyanda<br/><span class="text-[10px] opacity-60">1982 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1985 - Present" data-name="Anele">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden border border-primary/20">
+<img alt="Anele" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ugtQYoV1rTkeEwW7bw6mmEp7A3zffh1x42_Dk7gEMuP9pQ98PVClHbmweP90heetwM9zuVk96TKJFgGCKy6ubXeRypsc07HfDNsPe8jE3FBMxWH3ZkOfrvH0-6kOgutSvFbh_KE8Obh1oD5Wlm4GKEevbZpu7Yixa6J1MpW5VVr03bLSSmxixF2zdf88J_T1lM8ooHlR5JLZXzJSJUwjWxoh8avwJrXsxHiN9Oa-NzW2me1E7REFa6fDT4"/>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Anele<br/><span class="text-[10px] opacity-60">1985 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1984 - Present" data-name="Malixole">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Malixole<br/><span class="text-[10px] opacity-60">1984 - Present</span></span>
+</div>
+<div class="flex flex-col items-center gap-4 group family-member" data-dates="1986 - Present" data-name="Dumisani">
+<div class="glass-node w-24 h-24 rounded-full overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary/50 group-hover:text-primary transition-colors text-3xl">person</span>
+</div>
+<span class="font-display-lg text-xs text-on-surface-variant group-hover:text-primary text-center cursor-pointer">Dumisani<br/><span class="text-[10px] opacity-60">1986 - Present</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- 6. Subsequent generations -->
+<div class="flex flex-col items-center gap-12">
+<span class="font-label-sm text-label-sm text-primary tracking-[0.3em] uppercase">Generation IV: The Growth</span>
+<div class="flex flex-wrap justify-center gap-24">
+<div class="flex flex-col items-center gap-8 p-6 bg-surface-container/30 rounded-3xl border border-primary/5">
+<span class="font-label-sm text-[10px] text-primary-container uppercase">Vuyisani's Line</span>
+<div class="flex gap-6">
+<div class="flex flex-col items-center gap-2 family-member" data-dates="2005 - Present" data-name="Qhamani">
+<div class="glass-node w-16 h-16 rounded-full overflow-hidden border border-primary/30">
+<img alt="Qhamani" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgjMfVokmnyxltTcsRATusRY87bee2yj6N00hBbBvRUeDhjKfNC4itObxaok-5Vb46FhMuMtj_f1WoZSITUe6-9EDwzKrde74tqjhbXbDWjw5GunEL_j0ir9C8Txlz8nFXUp9eeC5ZfHe2WPhq0icyr48Vry5eVFA5Mo_3AbbqEOudL5hkJO0LsJzVO8R4FaahQEr_MoFCx8_jJS0bNQKv54trwqgceIj3myEGClYsit12Ly_cFQmqK6FFJm9UT25lLFw_DTwESak"/>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Qhamani</span>
+</div>
+<div class="flex flex-col items-center gap-2 family-member" data-dates="2008 - Present" data-name="Imange">
+<div class="glass-node w-16 h-16 rounded-full overflow-hidden border border-primary/30">
+<img alt="Imange" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxxjuWmuv0bp1VI2tQLnfaevcWg7dhV7h8d_mcKhA-fHV_NQ7oFcfYw6nqBbkIhEkMVbDMynAlPxcWpBRSv7jFLCtzdeIIq5Ebx8QKk7KSoFmoHC4Bc-JclrHZB9osFioJYjBdX1nGlczRDoVnqn6lVLdOZHCy8qAJGuKp9ThoHxCi0f_lTV7jfvKpp9-AOqZcPGJ4YC5H5B3gI7cNlEOfbJzyMj-xATDrXGsxREpSz0OZhuQ9qPG3JTIA96gDLQyJmZglPjyDlKU"/>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Imange</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center gap-8 p-6 bg-surface-container/30 rounded-3xl border border-primary/5">
+<span class="font-label-sm text-[10px] text-primary-container uppercase">Bathandwa's Line</span>
+<div class="flex gap-6">
+<div class="flex flex-col items-center gap-2 family-member" data-dates="2010 - Present" data-name="Alondwe">
+<div class="glass-node w-16 h-16 rounded-full overflow-hidden border border-primary/30">
+<img alt="Alondwe" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZctsUINmd2lDD77NW2lYlO4StUfNDiUjXptLPm2T68pn50j7tkq0ZXX5E38jJ9Vblo9CbmABPGk3rRMt6V74PWoh32zUkWRQoRGdBngT1BX4TCp972oP_Qh2XgHO0E7_5Q4w8j2xkCjWO79xeRZR7ZhSdquDZB5d-8wU-ntg8Yle82_wDI7B0SQ1E_Uiqz30bIdIffdSpv8S2YMdVp61TWOQAeYmgpMGI0cbWDSrrO08nvT_9nv-FPganpbFVkOLE3kjAuMP0590"/>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Alondwe</span>
+</div>
+<div class="flex flex-col items-center gap-2 opacity-50 family-member" data-dates="2014 - Present" data-name="Endinako">
+<div class="glass-node w-16 h-16 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">child_care</span>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Endinako</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-center gap-8 p-6 bg-surface-container/30 rounded-3xl border border-primary/5">
+<span class="font-label-sm text-[10px] text-primary-container uppercase">Luyanda's Line</span>
+<div class="flex gap-6">
+<div class="flex flex-col items-center gap-2 family-member" data-dates="2012 - Present" data-name="Dumisani">
+<div class="glass-node w-16 h-16 rounded-full overflow-hidden border border-primary/30">
+<img alt="Dumisani" class="node-portrait w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbaHnJbn1Z2bigR-Mcpm1zve0F5yhZGM9E6F7Xhui_5lZnc8TXnIzi1wxsL7xEdmD9-cWMFb86V3zoNkBWwLqV5nf2IJvI5PXUeCOtSEb4n3jWYissZh4EXLI1VmZ4BsoAV4Cg5SC7hGAzloaL3R08WlNZWwq_Whj4OKo3VIgSCwtVAy5BxtkFbkPLSz-RRMdxaxDROsaGJCrC2H6KcB1Y-DhXSEAWcU6uUK7hWV87jYp8JPtdFQYwZm22p6nzTrKHcxTryEVBuws"/>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Dumisani</span>
+</div>
+<div class="flex flex-col items-center gap-2 opacity-50 family-member" data-dates="2016 - Present" data-name="Akhona">
+<div class="glass-node w-16 h-16 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-xs">child_care</span>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Akhona</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Gen V: Fruit -->
+<div class="flex flex-col items-center gap-8">
+<span class="font-label-sm text-label-sm text-primary tracking-[0.3em] uppercase">Generation V: The Fruit</span>
+<div class="flex gap-12">
+<div class="flex flex-col items-center gap-3 family-member" data-dates="2020 - Present" data-name="Ongeziwe's Daughter">
+<div class="glass-node w-14 h-14 rounded-full flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary/70">face_3</span>
+</div>
+<span class="text-[10px] font-display-lg cursor-pointer">Ongeziwe's Daughter</span>
+</div>
+</div>
+</div>
+<!-- Gen VI: Eternity -->
+<div class="flex flex-col items-center pb-24">
+<span class="font-label-sm text-label-sm text-primary mb-6 tracking-[0.3em] uppercase">Generation VI: Eternity</span>
+<div class="relative">
+<div class="absolute inset-0 bg-primary/20 blur-2xl rounded-full"></div>
+<span class="material-symbols-outlined text-primary text-6xl relative animate-pulse" style="font-variation-settings: 'wght' 200;">all_inclusive</span>
+</div>
+<p class="font-body-md text-primary/60 mt-4 italic">To the generations yet unborn...</p>
+</div>
+</div>
+</div>
+</main>
+<footer class="w-full py-12 px-gutter bg-surface-container-lowest/90 backdrop-blur-md border-t border-primary/30 grid grid-cols-1 md:grid-cols-3 items-center gap-8 relative z-50">
+<div class="flex flex-col gap-2">
+<span class="font-display-lg text-primary text-xl uppercase">SEBENZILE &amp; OLGA</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Preserving our light for the next generation.</p>
+</div>
+<div class="text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 Sebenzile &amp; Olga Legacy Archive.</p>
+</div>
+<div class="flex justify-end gap-6">
+<a class="text-on-surface-variant hover:text-primary hover:scale-110 transition-all font-label-sm text-label-sm" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary hover:scale-110 transition-all font-label-sm text-label-sm" href="#">Contact Archivist</a>
+<a class="text-on-surface-variant hover:text-primary hover:scale-110 transition-all font-label-sm text-label-sm" href="#">Terms of Reverence</a>
+</div>
+</footer>
+<!-- Profile Modal Structure -->
+<div class="fixed inset-0 z-[100] hidden items-center justify-center p-6 sm:p-12 overflow-y-auto" id="profileModal">
+<div class="modal-overlay fixed inset-0 bg-black/80 backdrop-blur-sm cursor-pointer" onclick="closeModal()"></div>
+<div class="modal-card relative w-full max-w-2xl bg-surface-container border border-primary/30 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.2)] z-10 flex flex-col md:flex-row min-h-[400px]">
+<!-- Gold Accent Line -->
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+<!-- Close Button -->
+<button class="absolute top-6 right-6 text-on-surface-variant hover:text-primary hover:rotate-90 transition-all duration-300 z-20" onclick="closeModal()">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+<!-- Portrait Side -->
+<div class="md:w-2/5 relative group">
+<div class="h-full w-full bg-surface-container-highest flex items-center justify-center overflow-hidden" id="modalPortraitContainer">
+<img alt="" class="w-full h-full object-cover portrait-hero shadow-inner" id="modalPortrait" src=""/>
+<div class="hidden" id="modalPlaceholderIcon">
+<span class="material-symbols-outlined text-primary/30 text-8xl">person</span>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container via-transparent to-transparent opacity-60"></div>
+</div>
+<!-- Content Side -->
+<div class="md:w-3/5 p-8 sm:p-12 flex flex-col gap-6 bg-surface-container/60 backdrop-blur-md"></div>
+</div>
+</div>
+<script>
+    function closeModal() {
+        document.getElementById('profileModal').classList.add('hidden');
+        document.getElementById('profileModal').classList.remove('flex');
+    }
+    
+    document.querySelectorAll('.family-member').forEach(member => {
+        member.addEventListener('click', () => {
+            const modal = document.getElementById('profileModal');
+            const name = member.getAttribute('data-name');
+            const dates = member.getAttribute('data-dates');
+            const imgSrc = member.querySelector('img')?.src;
+            
+            modal.querySelector('#modalPortrait').src = imgSrc || '';
+            if (!imgSrc) {
+                modal.querySelector('#modalPortrait').classList.add('hidden');
+                modal.querySelector('#modalPlaceholderIcon').classList.remove('hidden');
+            } else {
+                modal.querySelector('#modalPortrait').classList.remove('hidden');
+                modal.querySelector('#modalPlaceholderIcon').classList.add('hidden');
+            }
+            
+            const contentSide = modal.querySelector('.md\\:w-3\\/5');
+            contentSide.innerHTML = `
+                <div>
+                    <h3 class="font-display-lg text-3xl text-primary mb-1 uppercase tracking-wider">${name}</h3>
+                    <p class="font-label-sm text-sm text-on-surface-variant opacity-70 tracking-[0.2em]">${dates}</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-surface-container-high rounded-xl border border-primary/10">
+                        <p class="font-body-md text-on-surface italic">"A brief placeholder for the legacy and contributions of ${name} to the family narrative."</p>
+                    </div>
+                </div>
+                <button class="mt-auto w-full py-3 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 rounded-lg font-label-sm uppercase tracking-widest transition-all">View Archive</button>
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        });
+    });
+
+    // Particle Background
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.top = Math.random() * 100 + 'vh';
+        p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+        p.style.animationDelay = Math.random() * 20 + 's';
+        p.style.animationDuration = (Math.random() * 10 + 15) + 's';
+        particlesContainer.appendChild(p);
+    }
+</script>
+</body></html>
