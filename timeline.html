@@ -1,0 +1,313 @@
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Timeline | Sebenzile &amp; Olga Legacy</title>
+    <script src="./script.js"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&amp;family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=Work+Sans:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              outline: "#99907c",
+              "inverse-primary": "#735c00",
+              "on-tertiary-container": "#2b4d1c",
+              "on-secondary": "#532200",
+              "surface-variant": "#40322c",
+              "surface-container-highest": "#40322c",
+              "surface-bright": "#453630",
+              "on-tertiary-fixed-variant": "#2d4f1e",
+              "surface-container-high": "#342721",
+              "primary-fixed-dim": "#e9c349",
+              "on-tertiary-fixed": "#062100",
+              "on-surface": "#f5ded5",
+              "on-error": "#690005",
+              "on-secondary-container": "#fb9f66",
+              "tertiary-fixed": "#c5efad",
+              "outline-variant": "#4d4635",
+              "on-primary-container": "#554300",
+              "secondary-fixed": "#ffdbc9",
+              error: "#ffb4ab",
+              tertiary: "#b1da9a",
+              "on-primary-fixed-variant": "#574500",
+              "on-primary": "#3c2f00",
+              "surface-container": "#291d17",
+              "on-primary-fixed": "#241a00",
+              surface: "#1c110c",
+              background: "#1c110c",
+              "on-tertiary": "#173809",
+              "surface-container-lowest": "#160c07",
+              secondary: "#ffb68c",
+              "inverse-surface": "#f5ded5",
+              "surface-tint": "#e9c349",
+              "on-secondary-fixed": "#321200",
+              "on-secondary-fixed-variant": "#753401",
+              "on-error-container": "#ffdad6",
+              "surface-container-low": "#251913",
+              "secondary-fixed-dim": "#ffb68c",
+              "primary-fixed": "#ffe088",
+              "on-surface-variant": "#d0c5af",
+              "tertiary-fixed-dim": "#a9d293",
+              "surface-dim": "#1c110c",
+              "secondary-container": "#753401",
+              "inverse-on-surface": "#3b2d27",
+              "tertiary-container": "#96be81",
+              "error-container": "#93000a",
+              primary: "#f2ca50",
+              "on-background": "#f5ded5",
+              "primary-container": "#d4af37",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+            spacing: {
+              gutter: "1.5rem",
+              "container-padding": "2rem",
+              "tree-node-gap": "4rem",
+              base: "8px",
+            },
+            fontFamily: {
+              "display-lg-mobile": ["Cinzel"],
+              "headline-md": ["Cinzel"],
+              "body-md": ["Cormorant Garamond"],
+              "label-sm": ["Work Sans"],
+              "display-lg": ["Cinzel"],
+              "body-lg": ["Cormorant Garamond"],
+            },
+            fontSize: {
+              "display-lg-mobile": [
+                "32px",
+                { lineHeight: "1.2", fontWeight: "700" },
+              ],
+              "headline-md": ["24px", { lineHeight: "1.4", fontWeight: "600" }],
+              "body-md": ["18px", { lineHeight: "1.6", fontWeight: "400" }],
+              "label-sm": [
+                "12px",
+                { lineHeight: "1", letterSpacing: "0.1em", fontWeight: "500" },
+              ],
+              "display-lg": [
+                "48px",
+                {
+                  lineHeight: "1.2",
+                  letterSpacing: "0.05em",
+                  fontWeight: "700",
+                },
+              ],
+              "body-lg": ["20px", { lineHeight: "1.6", fontWeight: "400" }],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #1c110c;
+        background-image:
+          radial-gradient(
+            circle at 50% 50%,
+            rgba(242, 202, 80, 0.05) 0%,
+            transparent 70%
+          ),
+          url("https://www.transparenttextures.com/patterns/black-paper.png");
+        overflow-x: hidden;
+      }
+
+      .glass-node {
+        background: rgba(41, 29, 23, 0.6);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(242, 202, 80, 0.2);
+        transition: all 0.5s ease-out;
+      }
+
+      .glass-node:hover {
+        border-color: rgba(242, 202, 80, 0.8);
+        box-shadow: 0 0 30px rgba(242, 202, 80, 0.15);
+        transform: translateY(-4px) scale(1.02);
+      }
+
+      .node-portrait {
+        filter: grayscale(100%);
+        transition: filter 0.6s ease;
+      }
+
+      .glass-node:hover .node-portrait {
+        filter: grayscale(0%);
+      }
+
+      .particle {
+        position: fixed;
+        background: #f2ca50;
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0.3;
+        z-index: 0;
+        animation: float 20s infinite linear;
+      }
+
+      @keyframes float {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.4;
+        }
+        100% {
+          transform: translateY(-100vh) rotate(360deg);
+          opacity: 0;
+        }
+      }
+
+      .scroll-container::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .scroll-container::-webkit-scrollbar-thumb {
+        background: #d4af37;
+        border-radius: 10px;
+      }
+      .scroll-container::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="font-body-md text-on-surface selection:bg-primary/30">
+    <div id="particles"></div>
+    <header
+      class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-md border-b border-primary/20 shadow-[0_0_20px_rgba(212,175,55,0.15)] flex justify-between items-center px-gutter py-4 transition-all duration-500 ease-out"
+    >
+      <a
+        href="./index.html"
+        class="font-display-lg text-headline-md tracking-widest text-primary uppercase hover:text-primary/80 transition-colors"
+      >
+        SEBENZILE &amp; OLGA
+      </a>
+      <div class="flex gap-3 relative">
+        <div class="relative group">
+          <button
+            type="button"
+            aria-label="Open menu"
+            class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform"
+          >
+            menu
+          </button>
+          <div class="absolute right-0 mt-2 w-48 bg-surface-container/95 backdrop-blur-md border border-primary/20 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+            <a href="./index.html" class="block px-4 py-3 text-on-surface hover:text-primary hover:bg-primary/10 transition-colors border-b border-primary/10 font-label-sm">Family Tree</a>
+            <a href="./gallery.html" class="block px-4 py-3 text-on-surface hover:text-primary hover:bg-primary/10 transition-colors border-b border-primary/10 font-label-sm">Gallery</a>
+            <a href="./timeline.html" class="block px-4 py-3 text-on-surface hover:text-primary hover:bg-primary/10 transition-colors border-b border-primary/10 font-label-sm">Timeline</a>
+            <a href="./archives.html" class="block px-4 py-3 text-on-surface hover:text-primary hover:bg-primary/10 transition-colors border-b border-primary/10 font-label-sm">Archives</a>
+            <a href="./legacy.html" class="block px-4 py-3 text-on-surface hover:text-primary hover:bg-primary/10 transition-colors font-label-sm">Legacy</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="pt-24 pb-12 min-h-screen relative overflow-hidden flex flex-col">
+      <section class="px-gutter mb-12 text-center max-w-4xl mx-auto">
+        <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-4">
+          Family Timeline
+        </h1>
+        <p class="text-body-lg text-on-surface-variant italic">
+          Key moments that shaped our family's journey
+        </p>
+      </section>
+
+      <div class="flex-grow px-gutter md:px-24">
+        <div class="max-w-3xl mx-auto">
+          <!-- Timeline Item 1 -->
+          <div class="flex gap-6 mb-12">
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-4 rounded-full bg-primary mb-4"></div>
+              <div class="w-1 h-24 bg-primary/30"></div>
+            </div>
+            <div class="glass-node p-6 rounded-lg flex-1">
+              <div class="text-primary font-display-sm mb-2">1890</div>
+              <h3 class="text-on-surface font-semibold mb-2">Prince Marhingqi Born</h3>
+              <p class="text-on-surface-variant text-sm">The founding patriarch of our legacy arrives into the world.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 2 -->
+          <div class="flex gap-6 mb-12">
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-4 rounded-full bg-primary mb-4"></div>
+              <div class="w-1 h-24 bg-primary/30"></div>
+            </div>
+            <div class="glass-node p-6 rounded-lg flex-1">
+              <div class="text-primary font-display-sm mb-2">1895</div>
+              <h3 class="text-on-surface font-semibold mb-2">Princess Manyawuza Born</h3>
+              <p class="text-on-surface-variant text-sm">Our matriarch enters the story, beginning a partnership that would define generations.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 3 -->
+          <div class="flex gap-6 mb-12">
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-4 rounded-full bg-primary mb-4"></div>
+              <div class="w-1 h-24 bg-primary/30"></div>
+            </div>
+            <div class="glass-node p-6 rounded-lg flex-1">
+              <div class="text-primary font-display-sm mb-2">1920</div>
+              <h3 class="text-on-surface font-semibold mb-2">Union &amp; Marriage</h3>
+              <p class="text-on-surface-variant text-sm">Prince Marhingqi and Princess Manyawuza unite, laying the foundation for our family.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 4 -->
+          <div class="flex gap-6 mb-12">
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-4 rounded-full bg-primary mb-4"></div>
+              <div class="w-1 h-24 bg-primary/30"></div>
+            </div>
+            <div class="glass-node p-6 rounded-lg flex-1">
+              <div class="text-primary font-display-sm mb-2">1954</div>
+              <h3 class="text-on-surface font-semibold mb-2">Sebenzile &amp; Olga's Union</h3>
+              <p class="text-on-surface-variant text-sm">The next chapter begins as a new generation comes together to continue the legacy.</p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 5 -->
+          <div class="flex gap-6 mb-12">
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-4 rounded-full bg-primary mb-4"></div>
+              <div class="w-1 h-24 bg-primary/30"></div>
+            </div>
+            <div class="glass-node p-6 rounded-lg flex-1">
+              <div class="text-primary font-display-sm mb-2">1975 - Present</div>
+              <h3 class="text-on-surface font-semibold mb-2">Growth &amp; Expansion</h3>
+              <p class="text-on-surface-variant text-sm">Multiple generations flourish, each adding their own chapter to our family's story.</p>
+            </div>
+          </div>
+
+          <!-- Timeline End -->
+          <div class="flex gap-6">
+            <div class="flex flex-col items-center">
+              <div class="w-4 h-4 rounded-full bg-primary mb-4"></div>
+            </div>
+            <div class="glass-node p-6 rounded-lg flex-1">
+              <div class="text-primary font-display-sm mb-2">Future</div>
+              <h3 class="text-on-surface font-semibold mb-2">Legacy Continues</h3>
+              <p class="text-on-surface-variant text-sm">The journey of our family endures, carrying forward the values and memories of those who came before.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      if (typeof initParticles === 'function') {
+        initParticles();
+      }
+    </script>
+  </body>
+</html>
